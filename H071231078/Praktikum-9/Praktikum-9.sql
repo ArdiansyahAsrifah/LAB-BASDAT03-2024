@@ -1,0 +1,95 @@
+-- NO 1
+-- CREATE DATABASE barcelona
+-- USE barcelona
+-- 
+-- CREATE TABLE klub(
+-- 	id INT PRIMARY KEY AUTO_INCREMENT,
+-- 	nama_klub VARCHAR(50) NOT NULL,
+-- 	kota_asal VARCHAR(20) NOT NULL
+-- )
+-- 
+-- CREATE TABLE pemain(
+-- 	id INT PRIMARY KEY AUTO_INCREMENT,
+-- 	nama_pemain VARCHAR(50) NOT NULL,
+-- 	posisi VARCHAR(20) NOT NULL,
+-- 	id_club INT,
+-- 	FOREIGN KEY(id_club) REFERENCES klub(id) 
+-- );
+-- 
+-- CREATE TABLE pertandingan(
+-- 	id INT PRIMARY KEY AUTO_INCREMENT,
+-- 	id_klub_tuan_rumah INT,
+-- 	id_klub_tamu INT,
+-- 	tanggal_pertandingan DATE NOT NULL,
+-- 	skor_tuan_rumah INT DEFAULT 0,
+-- 	skor_tamu INT DEFAULT 0,
+-- 	FOREIGN KEY(id_klub_tamu) REFERENCES klub(id),
+-- 	FOREIGN KEY(id_klub_tuan_rumah) REFERENCES klub(id)
+-- );
+-- 
+-- CREATE INDEX idx_posisi ON pemain(posisi)
+-- CREATE INDEX idx_kota_asal ON klub(kota_asal)
+-- EXPLAIN SELECT posisi FROM pemain
+-- DESCRIBE klub;
+-- DESCRIBE pemain;
+-- DESCRIBE pertandingan;
+-- NO 2
+-- SELECT 
+-- 	c.customerName, 
+-- 	c.country, sum(pm.amount) AS 'TotalPayments', 
+-- 	COUNT(o.orderNumber) AS 'orderCount', 
+-- 	max(pm.paymentDate) as 'LastPaymentDate',
+-- 	case 
+-- 		when sum(pm.amount) > 100000 then 'VIP'
+-- 		when SUM(pm.amount) > 50000 AND SUM(pm.amount) <= 100000 then 'Loyal'
+-- 		ELSE 'New'
+-- 	END AS 'Status'
+-- FROM customers c
+-- LEFT JOIN payments pm USING(customernumber)
+-- LEFT JOIN orders o USING(customernumber)
+-- GROUP BY c.customerNumber
+-- ORDER BY c.customerName
+
+-- NO 3
+-- SELECT
+-- 	c.customerNumber, 
+-- 	c.customerName,
+-- 	SUM(od.quantityOrdered) AS 'total_quantity',
+-- 	case
+-- 		when sum(od.quantityOrdered) > AVG(od.quantityOrdered) then 'diatas rata-rata'
+-- 		ELSE  'dibawah rata-rata'
+-- 	END AS 'kategori_pembelian'
+-- FROM customers c 
+-- JOIN orders o USING(customernumber)
+-- JOIN orderdetails od USING(ordernumber)
+-- JOIN products p USING(productcode)
+-- GROUP BY c.customerNumber
+-- ORDER BY sum(od.quantityOrdered) desc
+
+-- study case
+-- SET autocommit = 0;
+-- 
+-- START TRANSACTION;
+-- 
+-- UPDATE customers c
+-- LEFT JOIN payments p
+-- ON c.customernumber = p.customernumber
+-- SET c.customerName = 'tidak membeli'
+-- WHERE p.amount = 0 OR p.amount IS NULL;
+-- 
+-- SELECT c.customerName, p.amount FROM customers c
+-- LEFT JOIN payments p ON c.customernumber = p.customernumber;
+-- 
+-- 
+-- ROLLBACK;
+-- 
+-- 
+-- SELECT c.customerName, p.amount FROM customers c
+-- LEFT JOIN payments p ON c.customernumber = p.customernumber;
+-- 
+-- 
+-- SET autocommit = 1;
+
+
+
+
